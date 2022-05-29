@@ -9,9 +9,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/ping', (req: Request, res: Response) => {
   res.send('pong');
-})
+});
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`\n\nAPI is listening on port ${PORT}\n\n`)
-})
+  console.log(`\n\nAPI is listening on port ${PORT}\n\n`);
+});

@@ -4,7 +4,7 @@
     "noImplicitAny": true,
     "sourceMap": false,
     "module": "commonjs",
-    "target": "es6",
+    "target": "es2018",
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
     "moduleResolution": "node",
@@ -18,16 +18,5 @@
     "strict": true
   },
   "include": ["src/**/*.ts"],
-  "rules": {
-    "max-line-length": {
-      "options": [100]
-    },
-    "member-ordering": false,
-    "no-consecutive-blank-lines": false,
-    "object-literal-sort-keys": false,
-    "ordered-imports": false,
-    "quotemark": [true, "single"],
-    "variable-name": [true, "allow-leading-underscore"]
-  },
   "filesGlob": ["./app/**/*.ts", "./node_modules/@types/**/*.d.ts"]
 }
