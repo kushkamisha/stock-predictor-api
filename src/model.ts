@@ -1,8 +1,10 @@
 import * as tf from '@tensorflow/tfjs';
 import '@tensorflow/tfjs-node';
+import fs from 'fs';
+import path from 'path';
 
 // @ts-ignore
-import yahooStockPrices from 'yahoo-stock-prices';
+import yahooStockPrices, { StockPrice } from 'yahoo-stock-prices';
 
 // // Train a simple model:
 // const model = tf.sequential();
@@ -24,19 +26,33 @@ import yahooStockPrices from 'yahoo-stock-prices';
   // Load target crypto stock data
   const cryptoCurrency = 'BTC';
   const againstCurrency = 'USD';
+  const stockName = `${cryptoCurrency}-${againstCurrency}`;
 
   const start = new Date('2016-01-01');
   const end = new Date();
 
-  const prices = await yahooStockPrices.getHistoricalPrices(
-    start.getMonth(),
-    start.getDay(),
-    start.getFullYear(),
-    end.getMonth(),
-    end.getDay(),
-    end.getFullYear(),
-    `${cryptoCurrency}-${againstCurrency}`,
-    '1d'
-  );
-  console.log(prices.length);
+  let prices: StockPrice[];
+  const fileName = path.join(__dirname, 'data', `${stockName}.json`);
+  if (!fs.existsSync(fileName)) {
+    console.log(`Load from Yahoo Finance: ${stockName} stock data`);
+    prices = await yahooStockPrices.getHistoricalPrices(
+      start.getMonth(),
+      start.getDay(),
+      start.getFullYear(),
+      end.getMonth(),
+      end.getDay(),
+      end.getFullYear(),
+      stockName,
+      '1d'
+    );
+    const pricesJson = JSON.stringify(prices);
+    // console.log(prices.length);
+    fs.writeFileSync(path.join(__dirname, 'data', `${stockName}.json`), pricesJson);
+  } else {
+    console.log(`Load from presaved file: ${stockName} stock data`);
+    prices = JSON.parse(fs.readFileSync(fileName, 'utf-8')) as StockPrice[];
+  }
+  console.log(`The number of records of ${stockName} is ${prices.length}`);
+
+  // Prepare
 })();
