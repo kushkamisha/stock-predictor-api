@@ -2179,6 +2179,11 @@ minizlib@^2.1.1:
     minipass "^3.0.0"
     yallist "^4.0.0"
 
+minmaxscaler@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/minmaxscaler/-/minmaxscaler-1.0.1.tgz#fe3ddc798fca4eb91492b9d3f25b5552647f0045"
+  integrity sha512-RqnXGpnP0ILFtcTuscCacKQorCUxbrgUMn0F3wUhRyh48QTTg1uGFZj0HtJScl9TuBBrhYimwLe+PI0h3+hXNQ==
+
 mkdirp@^0.5.5:
   version "0.5.6"
   resolved "https://registry.yarnpkg.com/mkdirp/-/mkdirp-0.5.6.tgz#7def03d2432dcae4ba1d611445c48396062255f6"
