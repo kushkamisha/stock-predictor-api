@@ -78,4 +78,4 @@ run.sh
 .DS_Store
 
 dist/
-src/data/*
+model/data/*

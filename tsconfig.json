@@ -15,8 +15,8 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "lib": ["es2015.promise", "es2015.iterable"],
-    "strict": true
+    "strict": true,
+    "skipLibCheck": true
   },
-  "include": ["src/**/*.ts"],
-  "filesGlob": ["./app/**/*.ts", "./node_modules/@types/**/*.d.ts"]
+  "include": ["model/**/*.ts", "api/**/*.ts", "types/**/*.ts", "server.ts"]
 }

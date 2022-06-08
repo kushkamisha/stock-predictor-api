@@ -1,16 +1,17 @@
 {
   "name": "market-predictor",
-  "version": "1.0.0",
-  "main": "index.js",
+  "version": "0.1.0",
+  "main": "server.js",
   "license": "MIT",
   "scripts": {
     "dev": "npx nodemon -e ts --exec \"npm run boot\"",
     "build": "tsc",
-    "boot": "npm run build && node ./dist/index.js",
+    "boot": "npm run build && node ./dist/server.js",
     "lint": "npx eslint src/** --fix",
     "prettier": "npx prettier --write \"**/*.ts\""
   },
   "dependencies": {
+    "@binance/connector": "^1.10.0",
     "@tensorflow/tfjs": "^3.18.0",
     "@tensorflow/tfjs-node": "^3.18.0",
     "body-parser": "^1.20.0",

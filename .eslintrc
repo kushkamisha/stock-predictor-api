@@ -19,6 +19,27 @@
     "no-await-in-loop": ["off"],
     "max-len": ["error", 100],
     "no-plusplus": ["off"],
-    "no-console": "off"
+    "no-console": "off",
+    "import/prefer-default-export": "off",
+    "import/no-import-module-exports": "off",
+    "class-methods-use-this": "off",
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/ban-ts-ignore": "off",
+    "@typescript-eslint/no-misused-promises": "off",
+    "@typescript-eslint/lines-between-class-members": "off",
+    "@typescript-eslint/no-unused-vars": "warn",
+    "no-return-await": ["off"],
+    "@typescript-eslint/return-await": ["off"],
+    // "no-console": "off",
+    "lines-between-class-members": "off",
+    "import/no-named-default": "off",
+    "@typescript-eslint/no-explicit-any": "warn",
+    "import/no-cycle": "off",
+    "no-return-assign": "off",
+    "@typescript-eslint/interface-name-prefix": "off",
+    "radix": "off",
+    "no-prototype-builtins": "off",
+    "@typescript-eslint/camelcase": "off",
+    "@typescript-eslint/ban-ts-comment": "off"
   }
 }
