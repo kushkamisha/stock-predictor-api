@@ -9,22 +9,6 @@ import scaler from 'minmaxscaler';
 import yahooStockPrices, { StockPrice } from 'yahoo-stock-prices';
 import { Sequential } from '@tensorflow/tfjs';
 
-// // Train a simple model:
-// const model = tf.sequential();
-// model.add(tf.layers.dense({ units: 100, activation: 'relu', inputShape: [10] }));
-// model.add(tf.layers.dense({ units: 1, activation: 'linear' }));
-// model.compile({ optimizer: 'sgd', loss: 'meanSquaredError' });
-
-// const xs = tf.randomNormal([100, 10]);
-// const ys = tf.randomNormal([100, 1]);
-
-// model.fit(xs, ys, {
-//   epochs: 100,
-//   callbacks: {
-//     onEpochEnd: (epoch, log) => console.log(`Epoch ${epoch}: loss = ${log?.loss}`),
-//   },
-// });
-
 (async () => {
   // Load train data
   const cryptoCurrency = 'BTC';
@@ -49,7 +33,6 @@ import { Sequential } from '@tensorflow/tfjs';
       '1d'
     );
     const trainDataJson = JSON.stringify(trainData);
-    // console.log(prices.length);
     fs.writeFileSync(path.join(__dirname, 'data', `${stockName}.json`), trainDataJson);
   } else {
     console.log(`Load from presaved file: ${stockName} stock data`);
@@ -59,30 +42,24 @@ import { Sequential } from '@tensorflow/tfjs';
   const closePrices = trainData.map((x) => x.close);
   console.log(closePrices.slice(10));
 
-  // const data = [1, 3, 5, 7, 9, 11];
-  // const closePrices = data;
-
   // Prepare data
-  const scaledData = scaler.fit_transform(closePrices) as number[];
-  // console.log({ scaledData });
+  const scaledClosePrices = scaler.fit_transform(closePrices) as number[];
 
   const predictionDays = 60;
 
   const xTrainNormal = []; // [[60 days price], [60 days price], ...]
   const yTrain = [];
 
-  for (let i = predictionDays; i < scaledData.length; i++) {
-    xTrainNormal.push(scaledData.slice(i - predictionDays, i));
-    yTrain.push(scaledData[i]);
+  for (let i = predictionDays; i < scaledClosePrices.length; i++) {
+    xTrainNormal.push(scaledClosePrices.slice(i - predictionDays, i));
+    yTrain.push(scaledClosePrices[i]);
   }
 
   console.log(xTrainNormal.length);
   console.log(xTrainNormal[0].length);
 
-  // const xTrain = reshape(xTrainNormal, [xTrainNormal.length, xTrainNormal[0].length, 1]);
-  const xTrain = [];
-
   // Reshaping the train data
+  const xTrain = [];
   for (let i = 0; i < xTrainNormal.length; i++) {
     xTrain.push(xTrainNormal[i].map((x) => [x]));
   }
@@ -90,21 +67,6 @@ import { Sequential } from '@tensorflow/tfjs';
   console.log(xTrain.length);
   console.log(xTrain[0].length);
   console.log(xTrain[0][0].length);
-
-  // console.log({ xTrainLen: xTrain.length, yTrainLen: yTrain.length });
-  // console.log({ xTrain });
-  // console.log([xTrain[0][1].length, 1]);
-  // console.log(xTrain.length);
-  // console.log(xTrain[0].length);
-  // console.log(xTrain[0][0].length);
-
-  // const xTrain = [xTrainNormal];
-  // for (let i = 0; i < xTrain.length; i++) {
-  //   console.log(xTrainNormal[i]);
-  //   xTrain.push(xTrainNormal[i].map((x) => [x]));
-  // }
-
-  // console.log({ xTrain });
 
   // Train model
   const modelFileName = path.join(__dirname, 'models', `${stockName}.json`);
@@ -126,8 +88,6 @@ import { Sequential } from '@tensorflow/tfjs';
 
     model.compile({ optimizer: 'adam', loss: 'meanSquaredError' });
 
-    // const xs = tf.randomNormal([100, 10]);
-    // const ys = tf.randomNormal([100, 1]);
     const xs = tf.tensor3d(xTrain);
     console.log({ xsShape: xs.shape });
     const ys = tf.tensor1d(yTrain);
@@ -146,9 +106,6 @@ import { Sequential } from '@tensorflow/tfjs';
   }
 
   // Load stock test data
-  // const cryptoCurrency = 'BTC';
-  // const againstCurrency = 'USD';
-  // const stockName = `${cryptoCurrency}-${againstCurrency}`;
 
   const testStart = new Date('2020-01-01');
   const testEnd = new Date();
@@ -175,26 +132,24 @@ import { Sequential } from '@tensorflow/tfjs';
   }
   console.log(`The number of records of test data for ${stockName} stock is ${testData.length}`);
 
-  const actualPrices = testData.map((x) => x.close);
-  const totalDataset = closePrices.concat(actualPrices);
-  console.log(totalDataset.length);
+  const closePricesTest = testData.map((x) => x.close);
+  console.log({ closePricesTest });
 
-  // const modelInputs = totalDataset;
-  const modelInputs = totalDataset.slice(totalDataset.length - testData.length - predictionDays);
-  const modelInputs2 = scaler.fit_transform(modelInputs) as number[];
-  const modelInputs3 = modelInputs2.map((x) => [x]);
-  console.log(modelInputs3.length, modelInputs3[0].length);
-  // const closePrices = testData.map((x) => x.close);
-  // console.log(closePrices.slice(10));
+  // Prepare data
+  const scaledClosePricesTest = scaler.fit_transform(closePricesTest) as number[];
 
-  // Make predictions
   const xTestNormal = [];
+  const yTest = [];
 
-  for (let i = predictionDays; i < modelInputs3.length; i++) {
-    xTestNormal.push(modelInputs3.slice(i - predictionDays, i));
+  for (let i = predictionDays; i < scaledClosePricesTest.length; i++) {
+    xTestNormal.push(scaledClosePricesTest.slice(i - predictionDays, i));
+    yTest.push(scaledClosePricesTest[i]);
   }
 
-  // Reshaping the test data
+  console.log(xTestNormal.length);
+  console.log(xTestNormal[0].length);
+
+  // Reshaping the train data
   const xTest = [];
   for (let i = 0; i < xTestNormal.length; i++) {
     xTest.push(xTestNormal[i].map((x) => [x]));
@@ -204,15 +159,21 @@ import { Sequential } from '@tensorflow/tfjs';
   console.log(xTest[0].length);
   console.log(xTest[0][0].length);
 
-  const tfXTrain = tf.tensor3d(xTrain);
+  const tfXTest = tf.tensor3d(xTest);
+  const tfYTest = tf.tensor1d(yTest);
 
-  const tfPredictedPricesScaled = model.predict(tfXTrain);
+  const tfPredictedPricesScaled = model.predict(tfXTest);
   // @ts-ignore
-  const predictedPricesScaled = tfPredictedPricesScaled.dataSync();
+  const predictedPricesScaled = tfPredictedPricesScaled.dataSync() as number[];
   console.log(predictedPricesScaled);
-  // @ts-ignore
-  // console.log(predictedPricesScaled[1]);
-  // console.log(predictedPricesScaled.);
-  const predictedPrices = scaler.inverse_transform(predictedPricesScaled);
-  console.log(predictedPrices);
+
+  const predictedPrices = scaler.inverse_transform(predictedPricesScaled) as number[];
+  const yTestNonScaled = scaler.inverse_transform(yTest) as number[];
+  console.log({ testLen: predictedPrices.length });
+  console.log({ yTest });
+  console.log({ predictedPricesScaled });
+  const modelErrorScaled = tf.losses.meanSquaredError(tf.tensor1d(predictedPricesScaled), tfYTest);
+  modelErrorScaled.print();
+  const modelError = tf.losses.meanSquaredError(tf.tensor1d(predictedPrices), yTestNonScaled);
+  modelError.print();
 })();
