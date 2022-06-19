@@ -1,8 +1,9 @@
 import express from 'express';
-import { newOrder } from '../controllers/order';
+import { exchangeInfo, newOrder } from '../controllers/order';
 
 const router = express.Router();
 
-router.route('/newOrder').post(newOrder);
+router.route('/info').get(exchangeInfo);
+router.route('/new').post(newOrder);
 
-module.exports = router;
+export default router;

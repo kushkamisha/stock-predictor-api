@@ -18,5 +18,11 @@
     "strict": true,
     "skipLibCheck": true
   },
-  "include": ["model/**/*.ts", "api/**/*.ts", "types/**/*.ts", "server.ts"]
+  "include": [
+    "model/**/*.ts",
+    "api/**/*.ts",
+    "types/**/*.ts",
+    "errorsRegistry/**/*.ts",
+    "server.ts"
+  ]
 }

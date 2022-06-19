@@ -12,8 +12,10 @@
   },
   "dependencies": {
     "@binance/connector": "^1.10.0",
+    "@sweet-monads/either": "^3.0.1",
     "@tensorflow/tfjs": "^3.18.0",
     "@tensorflow/tfjs-node": "^3.18.0",
+    "axios": "^0.27.2",
     "body-parser": "^1.20.0",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",

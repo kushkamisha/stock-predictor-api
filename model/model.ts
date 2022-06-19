@@ -31,8 +31,8 @@ import { Sequential } from '@tensorflow/tfjs';
   const againstCurrency = 'USD';
   const stockName = `${cryptoCurrency}-${againstCurrency}`;
 
-  const trainStart = new Date('2016-01-01');
-  const trainEnd = new Date('2020-01-01');
+  const trainStart = new Date('2017-01-01');
+  const trainEnd = new Date('2021-01-01');
 
   let trainData: StockPrice[];
   const trainFileName = path.join(__dirname, 'data', `${stockName}.json`);
@@ -134,8 +134,8 @@ import { Sequential } from '@tensorflow/tfjs';
     console.log({ ysShape: ys.shape });
 
     await model.fit(xs, ys, {
-      epochs: 2, // 25,
-      batchSize: 64, // 32,
+      epochs: 25,
+      batchSize: 32,
       callbacks: {
         onEpochEnd: (epoch, log) => console.log(`Epoch ${epoch}: loss = ${log?.loss}`),
       },
