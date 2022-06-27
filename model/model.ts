@@ -167,11 +167,13 @@ const predictTomorrowPrice = async (
   return predictedPrices[0]; // tomorrow's price
 };
 
-const pricePredictor = async () => {
-  const cryptoCurrency = 'BTC';
-  const againstCurrency = 'USD';
+export const pricePredictor = async (
+  cryptoCurrency: string,
+  againstCurrency: string,
+  predictionDays = 60,
+  today = new Date()
+) => {
   const stockName = `${cryptoCurrency}-${againstCurrency}`;
-  const predictionDays = 60;
 
   /**
    * Model training
@@ -190,9 +192,9 @@ const pricePredictor = async () => {
   /**
    * Predict tomorrow's price
    */
-  const today = new Date(); // today
-  const price = await predictTomorrowPrice(today, stockName, predictionDays, model);
-  console.log({ price });
+  return predictTomorrowPrice(today, stockName, predictionDays, model);
 };
 
-pricePredictor();
+// const cryptoCurrency = 'BTC';
+// const againstCurrency = 'USD';
+// pricePredictor(cryptoCurrency, againstCurrency).then(console.log);
